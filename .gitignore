@@ -1,0 +1,12 @@
+# Las facturas se regeneran con la semilla; no se versionan
+datos/
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+.DS_Store
+.env
