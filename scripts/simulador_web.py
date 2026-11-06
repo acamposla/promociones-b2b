@@ -39,7 +39,7 @@ PLANTILLA = r"""<!-- Generado por promociones-b2b/scripts/simulador_web.py. No e
 <style>
 #simulador-rappel{--s-tinta:var(--tinta,#16161a);--s-suave:var(--tinta-suave,#55555f);
 --s-fondo:var(--fondo-sutil,#f1f1ec);--s-linea:var(--linea,#dededa);--s-acento:var(--acento,#9a3412);
---s-ok:#2f6f73;font-family:var(--sans,system-ui,sans-serif);margin:2rem 0;padding:1.25rem;
+--s-ok:#2f6f73;font-family:var(--sans,system-ui,sans-serif);line-height:1.35;margin:2rem 0;padding:1.25rem;
 background:var(--s-fondo);border:1px solid var(--s-linea);border-radius:10px;color:var(--s-tinta)}
 #simulador-rappel .fila{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;margin-bottom:1rem}
 #simulador-rappel label{font-size:.85rem;color:var(--s-suave);display:flex;flex-direction:column;gap:.3rem;flex:1 1 9rem}
