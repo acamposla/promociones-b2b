@@ -5,13 +5,16 @@
 -- Salida:   una fila por cliente con compras en :anio.
 --
 -- Decisiones:
---   - volumen      = lo facturado en el año (venta neta, sin IVA).
+--   - volumen      = lo facturado en el año. En el caso real el volumen era la
+--                    facturación bruta y el margen salía de la venta neta; aquí las
+--                    dos cosas son el mismo importe.
 --   - frecuencia   = pedidos distintos, no líneas: una línea por referencia inflaría
 --                    la frecuencia de quien compra muchas referencias a la vez.
 --   - margen_pct   = margen / volumen. Es la variable de rentabilidad del modelo; el
 --                    margen absoluto repite casi lo mismo que el volumen.
---   - tendencia    = volumen del año / volumen del anterior. Un cliente nuevo vale 1
---                    (sin historia no hay tendencia que medir, y 1 es "estable").
+--   - tendencia    = volumen del año / volumen del anterior. Un cliente nuevo, o con
+--                    una base anterior nula o negativa por abonos, vale 1 (sin base no
+--                    hay tendencia que medir, y 1 es "estable").
 --   - Los clientes que dejaron de comprar en :anio no entran: no se les puede ofrecer
 --     una promoción sobre una base que no existe.
 -- Dialecto: SQLite (viene con Python). Se traslada a PostgreSQL u Oracle cambiando
@@ -56,7 +59,7 @@ SELECT
     a.margen / a.volumen                     AS margen_pct,
     a.n_categorias,
     CASE
-        WHEN p.volumen_anterior IS NULL OR p.volumen_anterior = 0 THEN 1.0
+        WHEN p.volumen_anterior IS NULL OR p.volumen_anterior <= 0 THEN 1.0
         ELSE a.volumen / p.volumen_anterior
     END                                      AS tendencia
 FROM anio_actual AS a

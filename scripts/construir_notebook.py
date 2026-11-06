@@ -110,10 +110,15 @@ for a in (a1, a2):
 plt.tight_layout()
 """)
 
+code("""
+print("La silueta prefiere k =", barrido.silueta.idxmax())
+print("Calinski-Harabász prefiere k =", barrido.calinski_harabasz.idxmax())
+""")
+
 md("""
-Las dos medidas prefieren tres grupos. La pregunta de negocio es otra: si con tres grupos ventas
-puede hacer ofertas distintas a quien las necesita distintas. Se mira dónde cae el volumen de
-cada uno de los cuatro grupos finales cuando se fuerza a dos o a tres.
+Las medidas no coinciden entre sí, y ninguna responde a la pregunta de negocio: si con menos
+grupos ventas puede hacer ofertas distintas a quien las necesita distintas. Se mira dónde cae el
+volumen de cada uno de los cuatro grupos finales cuando se fuerza a dos o a tres.
 """)
 
 code("""
@@ -128,11 +133,11 @@ for k in (2, 3):
 """)
 
 md("""
-Con dos o con tres grupos, Premium y Commodity caen juntos. Son los dos grupos grandes, y
-necesitan ofertas opuestas: a uno hay que cuidarle el precio y al otro pedirle volumen a
-cambio. Por eso el caso se queda con cuatro, sabiendo que la separación estadística es algo
-peor. Con cinco, el método empieza a apartar grupos pequeños para los que no compensa diseñar
-una oferta propia.
+En estos datos, con dos o con tres grupos, Premium y Commodity caen juntos. Son los dos grupos
+grandes, y necesitan ofertas opuestas: a uno hay que cuidarle el precio y al otro pedirle volumen
+a cambio. Por eso el caso se queda con cuatro aunque no sea el número que eligen las dos medidas.
+En el caso real el patrón era parecido pero menos limpio: con tres grupos, una parte de los
+clientes de margen estrecho se iba con la masa de clientes pequeños.
 """)
 
 md("""
@@ -218,21 +223,21 @@ que compense gestionarla.
 """)
 
 code("""
-tc.rejilla(abt, segmento, desc_min=0.08, vol_min=1_000)
+tc.rejilla(abt, segmento, desc_min=0.06, vol_min=2_000)
 """)
 
 md("""
 ## 7. El rappel por crecimiento
 
 En vez de descontar sobre todo lo que compra el cliente, se descuenta solo sobre lo que crece:
-"si me compras un 5 % más de lo que ya me compras, te descuento un d % sobre lo que crezcas". La
+"si me compras un 6 % más de lo que ya me compras, te descuento un d % sobre lo que crezcas". La
 matriz da el neto para el grupo con distintos descuentos y tasas de aceptación. El signo lo
 decide el descuento frente al techo; la aceptación solo cambia el tamaño.
 """)
 
 code("""
 for grupo in ("Premium", "Commodity"):
-    print(f"{grupo}: techo {techos.loc[grupo, 'techo']:.1%}. Neto del rappel en € (u = 5 %)")
+    print(f"{grupo}: techo {techos.loc[grupo, 'techo']:.1%}. Neto del rappel en € (u = 6 %)")
     print(tc.escenarios(abt, segmento, grupo).round(0), end="\\n\\n")
 """)
 

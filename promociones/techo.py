@@ -47,9 +47,9 @@ def neto_rappel(volumen: float, margen: float, d: float, u: float, r: float) -> 
     return r * u * volumen * (margen - d)
 
 
-def escenarios(abt: pd.DataFrame, segmento: pd.Series, grupo: str, u: float = 0.05,
-               descuentos=(0.05, 0.10, 0.15, 0.20),
-               respuestas=(0.10, 0.20, 0.30, 0.40)) -> pd.DataFrame:
+def escenarios(abt: pd.DataFrame, segmento: pd.Series, grupo: str, u: float = 0.06,
+               descuentos=(0.04, 0.08, 0.12, 0.16),
+               respuestas=(0.15, 0.30, 0.45, 0.60)) -> pd.DataFrame:
     """Matriz descuento × aceptación con el neto del rappel para un grupo."""
     s = abt[segmento == grupo]
     v, m = s.volumen.sum(), margen_ponderado(s)
@@ -58,8 +58,8 @@ def escenarios(abt: pd.DataFrame, segmento: pd.Series, grupo: str, u: float = 0.
         index=[f"d={d:.0%}" for d in descuentos])
 
 
-def rejilla(abt: pd.DataFrame, segmento: pd.Series, desc_min: float = 0.08,
-            vol_min: float = 1_000.0) -> pd.DataFrame:
+def rejilla(abt: pd.DataFrame, segmento: pd.Series, desc_min: float = 0.06,
+            vol_min: float = 2_000.0) -> pd.DataFrame:
     """Acción por segmento y cuartil de volumen, con umbrales que decide negocio.
 
     desc_min: por debajo de este techo no queda hueco para una oferta de precio.

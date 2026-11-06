@@ -60,6 +60,21 @@ def test_ticket_por_frecuencia_es_volumen(abt):
     np.testing.assert_allclose(abt.ticket_medio * abt.frecuencia, abt.volumen)
 
 
+def test_base_anterior_negativa_por_abonos():
+    """Un abono que deja negativo el año anterior no puede dar una tendencia negativa."""
+    f = pd.DataFrame({
+        "pedido": ["A1", "A2", "B1", "B2"],
+        "cliente": ["A", "A", "B", "B"],
+        "fecha": [f"{ANIO - 1}-03-01", f"{ANIO}-03-01", f"{ANIO - 1}-03-01", f"{ANIO}-03-01"],
+        "categoria": ["cat_01"] * 4,
+        "importe": [-500.0, 1_000.0, 800.0, 1_000.0],
+        "coste": [-400.0, 800.0, 600.0, 800.0],
+    })
+    sql, ref = construir_abt(f, ANIO), construir_abt_pandas(f, ANIO)
+    np.testing.assert_allclose(sql.tendencia, ref.tendencia)
+    assert sql.set_index("cliente").tendencia.to_dict() == {"A": 1.0, "B": 1.25}
+
+
 def test_cliente_nuevo_tiene_tendencia_uno(facturas, abt):
     con_historia = set(facturas[facturas.fecha.str.startswith(str(ANIO - 1))].cliente)
     nuevos = abt[~abt.cliente.isin(con_historia)]

@@ -32,7 +32,7 @@ clientes, el reparto del volumen y los márgenes son inventados.
 
 | Paso | Dónde | Qué decide |
 |---|---|---|
-| Líneas de factura | `promociones/datos.py` | 1.260 clientes, dos años de pedidos con importe y coste |
+| Líneas de factura | `promociones/datos.py` | 1.285 clientes, dos años de pedidos con importe y coste |
 | Una fila por cliente | `sql/abt_clientes.sql` | Volumen, frecuencia (pedidos, no líneas), ticket medio, margen %, categorías y tendencia frente al año anterior |
 | Cuatro grupos | `promociones/segmentar.py` | Log en las variables de cola larga, escalado por mediana e IQR, K-Means con k=4 elegido por criterio comercial |
 | Reglas para ventas | `promociones/segmentar.py` | Árbol de decisión de tres niveles en unidades de negocio (€, pedidos, %) |
@@ -42,10 +42,10 @@ clientes, el reparto del volumen y los márgenes son inventados.
 
 Dos decisiones que el código deja a la vista:
 
-- **Cuatro grupos aunque la estadística pida tres.** La silueta y Calinski-Harabász prefieren
-  tres. Con dos o con tres grupos, los clientes grandes de margen alto y los de margen estrecho
-  caen juntos, y necesitan ofertas opuestas. El notebook lo enseña con el reparto del volumen de
-  cada grupo cuando se fuerza k=2 y k=3, y un test lo comprueba.
+- **Cuatro grupos aunque la estadística no los elija.** En estos datos la silueta prefiere tres
+  grupos. Con dos o con tres, los clientes grandes de margen alto y los de margen estrecho caen
+  juntos, y necesitan ofertas opuestas. El notebook lo enseña con el reparto del volumen de cada
+  grupo cuando se fuerza k=2 y k=3, y un test lo comprueba.
 - **El techo no necesita datos de campañas.** Si el descuento es igual al margen ponderado del
   grupo, el neto del rappel es cero acepte quien acepte. La tasa de respuesta decide cuánto se gana;
   el descuento decide si se gana.
@@ -60,7 +60,7 @@ cd promociones-b2b
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
-pytest                                # 15 comprobaciones, unos 5 segundos
+pytest                                # 16 comprobaciones, unos 7 segundos
 python scripts/construir_notebook.py  # reescribe y ejecuta notebooks/caso.ipynb
 python scripts/figura.py              # regenera docs/techo-frente-a-volumen.png
 python scripts/simulador_web.py docs/simulador.html  # regenera el simulador
@@ -73,6 +73,15 @@ volumen tiene el techo más bajo y, con menos de cuatro grupos, Premium y Commod
 
 El simulador está publicado dentro del caso, en la web. Sustituye al simulador de Power BI
 del TFM, que no se puede enseñar porque lleva los datos reales dentro del fichero.
+
+## Diferencias con el caso real
+
+- En el caso real, el volumen era la facturación bruta y el margen salía de la venta neta menos
+  el coste. Aquí las dos cosas salen del mismo importe.
+- En el caso real había abonos que dejaban bases negativas; la consulta las trata como un
+  cliente sin base (tendencia 1). El generador solo produce importes positivos.
+- Los umbrales de la rejilla y los escenarios del rappel son parámetros de diseño elegidos para
+  este ejemplo.
 
 ## Lo que no hace
 

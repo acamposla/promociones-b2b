@@ -67,11 +67,11 @@ border-radius:6px;background:transparent;color:var(--s-tinta)}
 </div>
 <div class="fila">
   <label>Crecimiento exigido <span class="valor" data-v="u"></span>
-    <input type="range" data-k="u" min="1" max="20" step="1" value="5"></label>
+    <input type="range" data-k="u" min="1" max="20" step="1" value="6"></label>
   <label>Descuento sobre lo que crece <span class="valor" data-v="d"></span>
-    <input type="range" data-k="d" min="1" max="40" step="1" value="10"></label>
+    <input type="range" data-k="d" min="1" max="40" step="1" value="8"></label>
   <label>Clientes que aceptan y cumplen <span class="valor" data-v="r"></span>
-    <input type="range" data-k="r" min="5" max="100" step="5" value="20"></label>
+    <input type="range" data-k="r" min="5" max="100" step="5" value="25"></label>
 </div>
 <div class="kpis">
   <div class="kpi estado"><b data-o="neto"></b><span>neto de la promoción</span></div>
