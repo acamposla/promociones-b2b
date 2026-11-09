@@ -58,8 +58,8 @@ def escenarios(abt: pd.DataFrame, segmento: pd.Series, grupo: str, u: float = 0.
         index=[f"d={d:.0%}" for d in descuentos])
 
 
-def rejilla(abt: pd.DataFrame, segmento: pd.Series, desc_min: float = 0.06,
-            vol_min: float = 2_000.0) -> pd.DataFrame:
+def rejilla(abt: pd.DataFrame, segmento: pd.Series, desc_min: float = 0.10,
+            vol_min: float = 5_000.0) -> pd.DataFrame:
     """Acción por segmento y cuartil de volumen, con umbrales que decide negocio.
 
     desc_min: por debajo de este techo no queda hueco para una oferta de precio.

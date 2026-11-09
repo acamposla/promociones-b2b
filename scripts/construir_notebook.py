@@ -223,7 +223,7 @@ que compense gestionarla.
 """)
 
 code("""
-tc.rejilla(abt, segmento, desc_min=0.06, vol_min=2_000)
+tc.rejilla(abt, segmento, desc_min=0.10, vol_min=5_000)
 """)
 
 md("""
