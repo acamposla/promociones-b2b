@@ -63,7 +63,8 @@ pip install -e ".[dev]"
 pytest                                # 16 comprobaciones, unos 7 segundos
 python scripts/construir_notebook.py  # reescribe y ejecuta notebooks/caso.ipynb
 python scripts/figura.py              # regenera docs/techo-frente-a-volumen.png
-python scripts/simulador_web.py docs/simulador.html  # regenera el simulador
+python scripts/simulador_web.py docs/simulador.html     # regenera el simulador
+python scripts/simulador_web.py docs/simulator.html en  # versión en inglés
 python -m promociones.datos datos/facturas.csv   # exporta las facturas a CSV
 ```
 

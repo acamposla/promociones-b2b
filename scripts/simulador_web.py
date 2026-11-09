@@ -4,7 +4,9 @@ Reproduce lo que hacía el simulador de Power BI del caso: eliges grupo y cuarti
 mueves crecimiento exigido, descuento y aceptación, y ves el neto, el techo, la holgura y qué
 parte de los clientes queda con un margen por debajo del descuento.
 
-Uso: python scripts/simulador_web.py <salida.html>
+Uso: python scripts/simulador_web.py <salida.html> [es|en]
+
+Con "en" sale en inglés: textos, nombres de segmento y formato de números (en-GB).
 """
 import json
 import sys
@@ -129,9 +131,48 @@ crecimiento × volumen × (techo − descuento).</figcaption>
 """
 
 
+# Versión en inglés: se traduce la plantilla ya rellena, cadena a cadena.
+TEXTOS_EN = {
+    "Grupo<select": "Segment<select",
+    ">Todos<": ">All<",
+    "Cuartil de volumen": "Volume quartile",
+    "Q1, los más pequeños": "Q1, smallest",
+    "Q4, los más grandes": "Q4, largest",
+    "Crecimiento exigido": "Required growth",
+    "Descuento sobre lo que crece": "Discount on growth",
+    "Clientes que aceptan y cumplen": "Customers who take it up and hit the target",
+    "neto de la promoción": "net result of the promotion",
+    "techo de descuento": "discount ceiling",
+    "holgura frente al techo": "headroom against the ceiling",
+    "clientes con margen por debajo del descuento": "customers with margin below the discount",
+    "clientes en la selección": "customers in the selection",
+    "Línea negra: techo del grupo. Línea de color: descuento elegido. Escala de 0 a 50 %.":
+        "Black line: segment ceiling. Coloured line: chosen discount. Scale from 0 to 50%.",
+    "Datos sintéticos del repositorio": "Synthetic data from the repository",
+    "Neto = aceptación ×\ncrecimiento × volumen × (techo − descuento).":
+        "Net = take-up ×\ngrowth × volume × (ceiling − discount).",
+    "'es-ES'": "'en-GB'",
+    "q(k).value + ' %'": "q(k).value + '%'",
+}
+SEGMENTOS_EN = {"Emergentes": "Emerging", "Masa": "Long tail"}
+
+
+def html(lang: str = "es") -> str:
+    d = datos()
+    if lang == "en":
+        d["segmentos"] = [SEGMENTOS_EN.get(s, s) for s in d["segmentos"]]
+    out = PLANTILLA.replace("__DATOS__", json.dumps(d, separators=(",", ":")))
+    if lang == "en":
+        for es, en in TEXTOS_EN.items():
+            assert es in out, f"cadena no encontrada en la plantilla: {es!r}"
+            out = out.replace(es, en)
+    return out
+
+
 if __name__ == "__main__":
     salida = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("docs/simulador.html")
     salida.parent.mkdir(parents=True, exist_ok=True)
-    html = PLANTILLA.replace("__DATOS__", json.dumps(datos(), separators=(",", ":")))
-    salida.write_text(html, encoding="utf-8")
-    print(f"{salida} ({len(html) / 1024:.0f} KB)")
+    lang = sys.argv[2] if len(sys.argv) > 2 else "es"
+    texto = html(lang)
+    salida.write_text(texto, encoding="utf-8")
+    print(f"{salida} ({len(texto) / 1024:.0f} KB)")
