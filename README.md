@@ -11,8 +11,8 @@ descuento igual para todos, la promoción pierde dinero justo donde está la may
 
 El caso contado, con el contexto de negocio y las decisiones:
 [El grupo que más compra es el que menos descuento aguanta](https://alejandrocamposlamas.com/portfolio/el-grupo-que-mas-compra/).
-Sale de mi trabajo de fin de máster en Business Intelligence (UNIR, 2026), con Leticia del Pino,
-sobre la cartera de Garza, la marca propia de iluminación, conectividad e IoT de Imprex.
+El caso es el de Garza, la marca propia de iluminación, conectividad e IoT de Imprex, que dirigí
+entre 2020 y 2026.
 
 > **English summary.** Reproducible pipeline that turns B2B invoice lines into a customer table,
 > segments it into four groups with K-Means, translates the groups into three-level decision
@@ -72,7 +72,7 @@ pandas, que el neto del rappel es cero en el techo y que el hallazgo se sostiene
 volumen tiene el techo más bajo y, con menos de cuatro grupos, Premium y Commodity van juntos.
 
 El simulador está publicado dentro del caso, en la web. Sustituye al simulador de Power BI
-del TFM, que no se puede enseñar porque lleva los datos reales dentro del fichero.
+del caso real, que no se puede enseñar porque lleva los datos reales dentro del fichero.
 
 ## Diferencias con el caso real
 
@@ -89,7 +89,7 @@ del TFM, que no se puede enseñar porque lleva los datos reales dentro del fiche
   medirlo hace falta un piloto con grupo de control, apuntando antes de lanzar a quién se le ofrece.
 - **No valida el clustering con el árbol.** El árbol aprende de las mismas variables que formaron
   los grupos; su acierto describe qué tan bien se resumen en reglas, nada más.
-- **No es el código del TFM.** Es una reescritura limpia del método sobre datos sintéticos.
+- **No es el código del caso real.** Es una reescritura limpia del método sobre datos sintéticos.
 
 ## Licencia
 
